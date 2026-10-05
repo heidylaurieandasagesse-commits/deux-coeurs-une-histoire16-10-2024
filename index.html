@@ -1592,178 +1592,44 @@ async function enterStory() {
     });
 
 }
-
-</script>
+<script>
 /* ==========================================
-   ANIMATIONS DU SITE
+   ✨ ANIMATION AU DÉFILEMENT
+   DEUX CŒURS, UNE HISTOIRE
 ========================================== */
 
-/* Apparition des éléments pendant le défilement */
-const animatedElements = document.querySelectorAll(
-    ".story-page p, .story-page blockquote, .story-page .highlight, .story-page .show-me"
-);
+document.addEventListener("DOMContentLoaded", function () {
 
-const observer = new IntersectionObserver(
-    (entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("scroll-reveal");
-                entry.target.classList.add("visible");
-            }
-        });
-    },
-    {
-        threshold: 0.15
-    }
-);
+    const elements = document.querySelectorAll(
+        ".story-page p, .story-page blockquote, .story-page .highlight, .story-page .show-me"
+    );
 
-animatedElements.forEach((element) => {
-    element.classList.add("scroll-reveal");
-    observer.observe(element);
+    const observer = new IntersectionObserver(
+        function (entries) {
+
+            entries.forEach(function (entry) {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add("visible");
+
+                }
+
+            });
+
+        },
+        {
+            threshold: 0.15
+        }
+    );
+
+    elements.forEach(function (element) {
+
+        observer.observe(element);
+
+    });
+
 });
-
-
-/* Transition entre les écrans */
-function switchScreen(currentScreen, nextScreen) {
-
-    currentScreen.style.opacity = "0";
-    currentScreen.style.transform =
-        "translateY(-25px) scale(0.98)";
-
-    setTimeout(() => {
-
-        currentScreen.style.display = "none";
-
-        nextScreen.style.display = "flex";
-        nextScreen.style.opacity = "0";
-        nextScreen.style.transform =
-            "translateY(25px) scale(0.98)";
-
-        requestAnimationFrame(() => {
-
-            nextScreen.style.opacity = "1";
-            nextScreen.style.transform =
-                "translateY(0) scale(1)";
-
-        });
-
-    }, 700);
-}
-
-
-/* Premier bouton */
-function confirmHeadphones() {
-
-    const welcome =
-        document.getElementById("welcomeScreen");
-
-    const ready =
-        document.getElementById("readyScreen");
-
-    const doneMessage =
-        document.getElementById("doneMessage");
-
-    if (doneMessage) {
-
-        doneMessage.style.display = "block";
-
-        doneMessage.style.animation =
-            "cardReveal 0.8s ease both";
-    }
-
-    setTimeout(() => {
-
-        switchScreen(welcome, ready);
-
-    }, 1600);
-}
-
-
-/* Entrée dans l'histoire + musique */
-async function enterStory() {
-
-    const ready =
-        document.getElementById("readyScreen");
-
-    const story =
-        document.getElementById("storyPage");
-
-    const music =
-        document.getElementById("music");
-
-    const musicError =
-        document.getElementById("musicError");
-
-
-    try {
-
-        music.currentTime = 0;
-
-        await music.play();
-
-        if (musicError) {
-            musicError.style.display = "none";
-        }
-
-    } catch (error) {
-
-        if (musicError) {
-            musicError.style.display = "block";
-        }
-
-    }
-
-
-    ready.style.opacity = "0";
-
-    ready.style.transform =
-        "translateY(-30px) scale(0.97)";
-
-
-    setTimeout(() => {
-
-        ready.style.display = "none";
-
-        story.style.display = "block";
-
-        story.style.opacity = "0";
-
-        story.style.transform =
-            "translateY(30px)";
-
-
-        requestAnimationFrame(() => {
-
-            story.style.opacity = "1";
-
-            story.style.transform =
-                "translateY(0)";
-
-        });
-
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-
-        /* Lance l'animation des textes */
-        const elements =
-            story.querySelectorAll(
-                "p, blockquote, .highlight, .show-me"
-            );
-
-        elements.forEach((element) => {
-
-            element.classList.add("scroll-reveal");
-
-            observer.observe(element);
-
-        });
-
-    }, 750);
-}
 </script>
 </body>
 </html>
