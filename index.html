@@ -162,36 +162,6 @@ button:hover::after {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-
-/* ==========================================
-   ❤️ APPARITION DES PARAGRAPHES
-========================================== */
-
-.story-page p,
-.story-page blockquote,
-.story-page .highlight,
-.story-page .show-me {
-    opacity: 0;
-    transform: translateY(35px);
-    filter: blur(3px);
-
-    transition:
-        opacity 1s ease,
-        transform 1s cubic-bezier(0.22, 1, 0.36, 1),
-        filter 1s ease;
-}
-
-
-/* Quand l'élément devient visible */
-
-.story-page .visible {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-}
-
 
 /* ==========================================
    💗 PETITS MOUVEMENTS DES CŒURS
