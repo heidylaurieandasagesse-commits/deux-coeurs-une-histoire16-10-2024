@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Deux cœurs, une histoire</title>
+    
+<style>
 /* =========================================
    ANIMATIONS FLUIDES DU SITE
 ========================================= */
@@ -217,14 +222,6 @@ blockquote:hover {
         transition-duration: 0.01ms !important;
     }
 }
-    button {
-    position: relative;
-    overflow: hidden;
-}
-<title>Deux cœurs, une histoire</title>
-    
-<style>
-
 * {
     box-sizing: border-box;
 }
@@ -1330,6 +1327,86 @@ footer {
 <script>
 
 
+   function switchScreen(currentScreen, nextScreen) {
+    currentScreen.style.opacity = "0";
+    currentScreen.style.transform = "translateY(-20px) scale(0.98)";
+
+    setTimeout(() => {
+        currentScreen.style.display = "none";
+
+        nextScreen.style.display = "flex";
+        nextScreen.style.opacity = "0";
+        nextScreen.style.transform = "translateY(25px) scale(0.98)";
+
+        requestAnimationFrame(() => {
+            nextScreen.style.opacity = "1";
+            nextScreen.style.transform = "translateY(0) scale(1)";
+        });
+
+    }, 700);
+}
+
+
+function confirmHeadphones() {
+    const welcome = document.getElementById("welcomeScreen");
+    const ready = document.getElementById("readyScreen");
+
+    const doneMessage = document.getElementById("doneMessage");
+
+    if (doneMessage) {
+        doneMessage.style.display = "block";
+        doneMessage.style.animation = "cardAppear 0.8s ease both";
+    }
+
+    setTimeout(() => {
+        switchScreen(welcome, ready);
+    }, 1600);
+}
+
+
+async function enterStory() {
+    const ready = document.getElementById("readyScreen");
+    const story = document.getElementById("storyPage");
+    const music = document.getElementById("music");
+    const musicError = document.getElementById("musicError");
+
+    try {
+        music.currentTime = 0;
+        await music.play();
+
+        if (musicError) {
+            musicError.style.display = "none";
+        }
+
+    } catch (error) {
+        if (musicError) {
+            musicError.style.display = "block";
+        }
+    }
+
+    /* Transition vers l'histoire */
+    ready.style.opacity = "0";
+    ready.style.transform = "translateY(-30px) scale(0.97)";
+
+    setTimeout(() => {
+        ready.style.display = "none";
+
+        story.style.display = "block";
+        story.style.opacity = "0";
+        story.style.transform = "translateY(30px)";
+
+        requestAnimationFrame(() => {
+            story.style.opacity = "1";
+            story.style.transform = "translateY(0)";
+        });
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }, 750);
+}
 /* =================================
    DATE ET HEURE EN TEMPS RÉEL
 ================================= */
@@ -1456,85 +1533,5 @@ async function enterStory() {
 
 </script>
 
-function switchScreen(currentScreen, nextScreen) {
-    currentScreen.style.opacity = "0";
-    currentScreen.style.transform = "translateY(-20px) scale(0.98)";
-
-    setTimeout(() => {
-        currentScreen.style.display = "none";
-
-        nextScreen.style.display = "flex";
-        nextScreen.style.opacity = "0";
-        nextScreen.style.transform = "translateY(25px) scale(0.98)";
-
-        requestAnimationFrame(() => {
-            nextScreen.style.opacity = "1";
-            nextScreen.style.transform = "translateY(0) scale(1)";
-        });
-
-    }, 700);
-}
-
-
-function confirmHeadphones() {
-    const welcome = document.getElementById("welcomeScreen");
-    const ready = document.getElementById("readyScreen");
-
-    const doneMessage = document.getElementById("doneMessage");
-
-    if (doneMessage) {
-        doneMessage.style.display = "block";
-        doneMessage.style.animation = "cardAppear 0.8s ease both";
-    }
-
-    setTimeout(() => {
-        switchScreen(welcome, ready);
-    }, 1600);
-}
-
-
-async function enterStory() {
-    const ready = document.getElementById("readyScreen");
-    const story = document.getElementById("storyPage");
-    const music = document.getElementById("music");
-    const musicError = document.getElementById("musicError");
-
-    try {
-        music.currentTime = 0;
-        await music.play();
-
-        if (musicError) {
-            musicError.style.display = "none";
-        }
-
-    } catch (error) {
-        if (musicError) {
-            musicError.style.display = "block";
-        }
-    }
-
-    /* Transition vers l'histoire */
-    ready.style.opacity = "0";
-    ready.style.transform = "translateY(-30px) scale(0.97)";
-
-    setTimeout(() => {
-        ready.style.display = "none";
-
-        story.style.display = "block";
-        story.style.opacity = "0";
-        story.style.transform = "translateY(30px)";
-
-        requestAnimationFrame(() => {
-            story.style.opacity = "1";
-            story.style.transform = "translateY(0)";
-        });
-
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        });
-
-    }, 750);
-}
 </body>
 </html>
