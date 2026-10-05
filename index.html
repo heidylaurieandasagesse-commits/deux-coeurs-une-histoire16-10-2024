@@ -1,685 +1,979 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Deux cœurs, une histoire</title>
+<title>Deux cœurs, une histoire</title>
 
-    <style>
+<style>
 
-        * {
-            box-sizing: border-box;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        html {
-            scroll-behavior: smooth;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        body {
-            margin: 0;
-            font-family: Georgia, "Times New Roman", serif;
-            color: #4b4038;
-            line-height: 1.9;
+body {
+    margin: 0;
+    font-family: Georgia, "Times New Roman", serif;
+    color: #4b3929;
 
-            background:
-                radial-gradient(circle at 20% 15%, rgba(255, 248, 220, 0.95), transparent 35%),
-                radial-gradient(circle at 80% 80%, rgba(239, 218, 177, 0.65), transparent 40%),
-                linear-gradient(135deg, #f7efd9, #eee2c5, #f9f1dd);
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(255,255,255,0.75),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at bottom right,
+            rgba(184,145,92,0.20),
+            transparent 40%
+        ),
+        linear-gradient(
+            135deg,
+            #f8f0df,
+            #ead9b9,
+            #f7edd8
+        );
 
-            min-height: 100vh;
-        }
+    min-height: 100vh;
+}
 
-        /* =========================
-           PREMIÈRE PAGE
-        ========================= */
 
-        .welcome-screen,
-        .ready-screen {
-            min-height: 100vh;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 30px 20px;
-            text-align: center;
-        }
+/* =================================
+   PREMIÈRE PAGE
+================================= */
 
-        .welcome-card,
-        .ready-card {
-            width: min(600px, 92%);
-            padding: 55px 35px;
-            background: rgba(255, 252, 240, 0.88);
-            border: 1px solid rgba(139, 112, 76, 0.22);
-            border-radius: 28px;
-            box-shadow: 0 20px 60px rgba(90, 70, 40, 0.15);
-            backdrop-filter: blur(8px);
-        }
+.welcome-screen,
+.ready-screen {
+    min-height: 100vh;
 
-        .little-line {
-            font-size: 0.85rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #88765d;
-            margin-bottom: 25px;
-        }
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-        .welcome-card h1,
-        .ready-card h1 {
-            margin: 0 0 25px;
-            font-size: clamp(2.8rem, 8vw, 5rem);
-            font-weight: normal;
-            color: #635443;
-            line-height: 1.15;
-        }
+    padding: 25px;
+    text-align: center;
+}
 
-        .welcome-card p,
-        .ready-card p {
-            font-size: 1.08rem;
-            color: #6e6256;
-        }
+.ready-screen {
+    display: none;
+}
 
-        .instruction {
-            margin: 30px 0;
-            font-style: italic;
-        }
+.welcome-card,
+.ready-card {
+    max-width: 650px;
+    width: 100%;
 
-        /* =========================
-           BOUTONS
-        ========================= */
+    padding: 55px 35px;
 
-        button {
-            border: none;
-            padding: 15px 30px;
-            border-radius: 50px;
-            background: #8b7655;
-            color: white;
-            font-family: Georgia, "Times New Roman", serif;
-            font-size: 1rem;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(90, 70, 40, 0.18);
-            transition: 0.3s ease;
-        }
+    background: rgba(255, 250, 239, 0.88);
 
-        button:hover {
-            transform: translateY(-2px);
-            background: #756247;
-        }
+    border: 1px solid rgba(126, 92, 52, 0.18);
 
-        button:active {
-            transform: scale(0.97);
-        }
+    border-radius: 28px;
 
-        /* =========================
-           MESSAGE "C'EST FAIT"
-        ========================= */
+    box-shadow:
+        0 20px 60px rgba(80, 55, 30, 0.18);
 
-        .done-message {
-            display: none;
-            margin-top: 25px;
-            color: #74624c;
-            font-style: italic;
-        }
+    backdrop-filter: blur(8px);
+}
 
-        .done-message.show {
-            display: block;
-        }
 
-        /* =========================
-           DEUXIÈME PAGE
-        ========================= */
+/* =================================
+   DATE ET HEURE EN DIRECT
+================================= */
 
-        .ready-screen {
-            display: none;
-        }
+.live-date {
+    font-size: 20px;
 
-        .ready-screen.show {
-            display: flex;
-        }
+    color: #806044;
 
-        /* =========================
-           PAGE PRINCIPALE
-        ========================= */
+    letter-spacing: 1px;
 
-        .story-page {
-            display: none;
-        }
+    margin-bottom: 8px;
+}
 
-        .story-page.show {
-            display: block;
-        }
+.live-time {
+    font-size: 32px;
 
-        main {
-            width: min(850px, 92%);
-            margin: auto;
-            padding: 40px 0 80px;
-        }
+    color: #684b30;
 
-        /* =========================
-           COUVERTURE
-        ========================= */
+    letter-spacing: 3px;
 
-        .hero {
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 60px 20px;
-        }
+    margin-bottom: 30px;
+}
 
-        .small-title {
-            color: #88765d;
-            font-size: 0.85rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-        }
 
-        .hero h1 {
-            margin: 20px 0;
-            color: #5c4d3e;
-            font-size: clamp(3.2rem, 9vw, 6rem);
-            line-height: 1.05;
-            font-weight: normal;
-        }
+/* =================================
+   TITRES DES PAGES D'INTRODUCTION
+================================= */
 
-        .subtitle {
-            max-width: 650px;
-            color: #756858;
-            font-size: 1.08rem;
-            font-style: italic;
-        }
+.welcome-card h1,
+.ready-card h1 {
+    font-size: clamp(38px, 8vw, 64px);
 
-        .scroll-message {
-            margin-top: 45px;
-            font-size: 0.85rem;
-            color: #8c7a62;
-            letter-spacing: 1px;
-        }
+    margin: 0 0 20px;
 
-        /* =========================
-           LETTRE
-        ========================= */
+    color: #684b30;
 
-        .letter {
-            margin-top: 20px;
-            padding: 45px 38px;
-            background: rgba(255, 252, 242, 0.82);
-            border-radius: 26px;
-            border: 1px solid rgba(139, 112, 76, 0.18);
-            box-shadow: 0 18px 55px rgba(90, 70, 40, 0.12);
-        }
+    font-weight: normal;
+}
 
-        .letter p {
-            margin: 0 0 25px;
-        }
+.welcome-card p,
+.ready-card p {
+    font-size: 20px;
 
-        .letter strong {
-            color: #5c4d3e;
-        }
+    line-height: 1.7;
 
-        .quote {
-            margin: 35px 0;
-            padding: 18px 25px;
-            border-left: 3px solid #a08c6d;
-            color: #655644;
-            font-size: 1.12rem;
-            font-style: italic;
-        }
+    margin-bottom: 35px;
+}
 
-        .final-message {
-            margin-top: 45px;
-            text-align: center;
-            color: #5c4d3e;
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
 
-        footer {
-            padding: 45px 20px 20px;
-            text-align: center;
-            color: #897964;
-            font-size: 0.9rem;
-        }
+/* =================================
+   BOUTONS
+================================= */
 
-        /* =========================
-           TÉLÉPHONE
-        ========================= */
+.button {
+    border: none;
 
-        @media (max-width: 600px) {
+    padding: 15px 32px;
 
-            .welcome-card,
-            .ready-card {
-                padding: 45px 25px;
-            }
+    border-radius: 40px;
 
-            .welcome-card h1,
-            .ready-card h1 {
-                font-size: 2.8rem;
-            }
+    background: #8a6845;
 
-            main {
-                width: 94%;
-            }
+    color: white;
 
-            .hero {
-                min-height: 80vh;
-                padding: 40px 10px;
-            }
+    font-family: Georgia, "Times New Roman", serif;
 
-            .hero h1 {
-                font-size: 3.3rem;
-            }
+    font-size: 17px;
 
-            .letter {
-                padding: 30px 22px;
-                border-radius: 20px;
-            }
+    cursor: pointer;
 
-            .letter p {
-                margin-bottom: 22px;
-            }
-        }
+    transition: 0.3s ease;
 
-    </style>
+    box-shadow:
+        0 8px 20px rgba(80, 55, 30, 0.20);
+}
+
+.button:hover {
+    transform: translateY(-3px);
+
+    background: #705033;
+}
+
+
+/* =================================
+   MESSAGE APRÈS "C'EST FAIT"
+================================= */
+
+.done-message {
+    margin-top: 20px;
+
+    font-size: 16px !important;
+
+    color: #806044;
+
+    display: none;
+}
+
+
+/* =================================
+   PAGE DE L'HISTOIRE
+================================= */
+
+.story-page {
+    display: none;
+
+    padding-bottom: 50px;
+}
+
+
+/* =================================
+   COUVERTURE
+================================= */
+
+.hero {
+    min-height: 90vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    padding: 40px 25px;
+}
+
+.small-title {
+    font-size: 18px;
+
+    letter-spacing: 3px;
+
+    color: #806044;
+
+    margin-bottom: 25px;
+}
+
+.hero h1 {
+    font-size: clamp(48px, 10vw, 90px);
+
+    line-height: 1.05;
+
+    font-weight: normal;
+
+    color: #5d422b;
+
+    margin: 0;
+}
+
+.subtitle {
+    max-width: 650px;
+
+    margin-top: 30px;
+
+    font-size: 21px;
+
+    line-height: 1.7;
+
+    color: #70563c;
+}
+
+
+/* =================================
+   GRANDE LETTRE
+================================= */
+
+.letter {
+    width: min(900px, 90%);
+
+    margin: auto;
+
+    padding: clamp(30px, 6vw, 70px);
+
+    background: rgba(255, 250, 239, 0.82);
+
+    border-radius: 25px;
+
+    box-shadow:
+        0 15px 50px rgba(80, 55, 30, 0.14);
+
+    backdrop-filter: blur(5px);
+}
+
+.letter section {
+    margin-bottom: 65px;
+}
+
+.letter h2 {
+    color: #684b30;
+
+    font-size: clamp(25px, 5vw, 34px);
+
+    font-weight: normal;
+
+    margin-bottom: 25px;
+}
+
+.letter p {
+    font-size: 18px;
+
+    line-height: 1.9;
+
+    margin: 0 0 22px;
+}
+
+
+/* =================================
+   LISTE MISE EN AVANT
+================================= */
+
+.highlight-list {
+    margin: 30px 0;
+
+    padding: 5px 25px;
+
+    border-left: 3px solid #9a7952;
+}
+
+.highlight-list p {
+    margin: 12px 0;
+}
+
+
+/* =================================
+   CITATIONS
+================================= */
+
+.quote {
+    margin: 35px 0 !important;
+
+    padding: 20px 25px;
+
+    border-left: 4px solid #9a7952;
+
+    font-style: italic;
+
+    color: #684b30;
+}
+
+
+/* =================================
+   "MONTRE-MOI"
+================================= */
+
+.show-me {
+    margin: 30px 0;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    background: rgba(223, 202, 167, 0.28);
+}
+
+.show-me p {
+    margin: 8px 0;
+}
+
+
+/* =================================
+   FIN
+================================= */
+
+.ending {
+    text-align: center;
+
+    margin-bottom: 20px !important;
+}
+
+.celebration {
+    font-size: 32px !important;
+
+    letter-spacing: 8px;
+}
+
+.final-message {
+    font-size: 24px !important;
+
+    color: #684b30;
+
+    font-weight: bold;
+
+    margin-top: 35px !important;
+}
+
+
+/* =================================
+   FOOTER
+================================= */
+
+footer {
+    text-align: center;
+
+    padding: 50px 20px 20px;
+
+    color: #806044;
+
+    font-size: 17px;
+
+    line-height: 1.8;
+}
+
+
+/* =================================
+   VERSION TÉLÉPHONE
+================================= */
+
+@media (max-width: 600px) {
+
+    .welcome-card,
+    .ready-card {
+        padding: 40px 24px;
+    }
+
+    .welcome-card p,
+    .ready-card p {
+        font-size: 18px;
+    }
+
+    .live-date {
+        font-size: 18px;
+    }
+
+    .live-time {
+        font-size: 27px;
+
+        letter-spacing: 2px;
+    }
+
+    .hero {
+        min-height: 80vh;
+    }
+
+    .subtitle {
+        font-size: 18px;
+    }
+
+    .letter {
+        width: 94%;
+
+        padding: 28px 22px;
+    }
+
+    .letter p {
+        font-size: 17px;
+
+        line-height: 1.8;
+    }
+
+    .letter section {
+        margin-bottom: 50px;
+    }
+}
+
+</style>
 </head>
+
 
 <body>
 
-    <!-- =========================
-         PREMIÈRE PAGE
-    ========================= -->
 
-    <div class="welcome-screen" id="welcomeScreen">
+<!-- =================================
+     PREMIÈRE PAGE
+================================= -->
 
-        <div class="welcome-card">
+<div class="welcome-screen" id="welcomeScreen">
 
-            <div class="little-line">
-                Une petite surprise pour toi
-            </div>
+    <div class="welcome-card">
 
-            <h1>Bonjour Amour</h1>
+        <!-- DATE ACTUELLE -->
+        <div class="live-date" id="liveDate"></div>
 
-            <p class="instruction">
-                Mets tes écouteurs avant de continuer.
-            </p>
+        <!-- HEURE ACTUELLE -->
+        <div class="live-time" id="liveTime"></div>
 
-            <button onclick="confirmHeadphones()">
-                C'est fait
-            </button>
 
-            <p class="done-message" id="doneMessage">
-                Très bien... garde-les bien. ❤️
-            </p>
+        <h1>
+            Bonjour Amour
+        </h1>
 
-        </div>
+
+        <p>
+            Mets tes écouteurs avant de continuer.
+        </p>
+
+
+        <button
+            class="button"
+            onclick="confirmHeadphones()"
+        >
+            C’est fait
+        </button>
+
+
+        <p
+            class="done-message"
+            id="doneMessage"
+        >
+            Très bien... garde-les bien. ❤️
+        </p>
 
     </div>
 
+</div>
 
-    <!-- =========================
-         DEUXIÈME PAGE
-    ========================= -->
 
-    <div class="ready-screen" id="readyScreen">
 
-        <div class="ready-card">
+<!-- =================================
+     DEUXIÈME PAGE
+================================= -->
 
-            <div class="little-line">
-                Une histoire à découvrir
-            </div>
+<div
+    class="ready-screen"
+    id="readyScreen"
+>
 
-            <h1>Tu es prêt ?</h1>
+    <div class="ready-card">
+
+        <h1>
+            Tu es prêt ?
+        </h1>
+
+
+        <p>
+            Tu es prêt à voir ce que je te réserve ?
+        </p>
+
+
+        <button
+            class="button"
+            onclick="enterStory()"
+        >
+            Oui, j’accepte
+        </button>
+
+    </div>
+
+</div>
+
+
+
+<!-- =================================
+     HISTOIRE
+================================= -->
+
+<div
+    class="story-page"
+    id="storyPage"
+>
+
+
+    <!-- COUVERTURE -->
+
+    <header class="hero">
+
+        <p class="small-title">
+            16 octobre 2026
+        </p>
+
+
+        <h1>
+            Deux cœurs,<br>
+            une histoire
+        </h1>
+
+
+        <p class="subtitle">
+            Certaines histoires méritent plus qu’un souvenir :
+            elles méritent leurs propres pages.
+        </p>
+
+    </header>
+
+
+
+    <!-- LETTRE -->
+
+    <main class="letter">
+
+
+        <section>
+
+            <h2>
+                Deux années de nous
+            </h2>
 
             <p>
-                Tu es prêt à voir ce que je te réserve ?
+                Aujourd’hui, 16 octobre, nous célébrons nos deux ans.
+                Deux années qui, lorsqu’on y pense, contiennent tellement
+                de choses… des moments magnifiques, des épreuves, des larmes,
+                des incompréhensions, des combats, mais aussi beaucoup de
+                détermination.
             </p>
 
-            <button onclick="enterStory()">
-                Oui, j'accepte
-            </button>
-
-        </div>
-
-    </div>
+        </section>
 
 
-    <!-- =========================
-         MUSIQUE
-    ========================= -->
 
-    <!--
-        Place ton fichier audio autorisé dans le même dossier
-        que index.html et appelle-le :
+        <section>
 
-        daylight.mp3
-    -->
+            <h2>
+                Au commencement
+            </h2>
 
-    <audio id="music" loop>
-        <source src="daylight.mp3" type="audio/mpeg">
-    </audio>
+            <p>
+                Au début, nos parents n’acceptaient pas notre relation.
+                Pourtant, malgré tout ce qui se dressait devant nous,
+                nous avons continué à nous battre.
+            </p>
 
+            <p>
+                Ma détermination, ta détermination et tout ce que nous avons
+                traversé ont finalement permis à nos familles d’accepter
+                notre histoire.
+            </p>
 
-    <!-- =========================
-         HISTOIRE
-    ========================= -->
+            <p>
+                Je pensais qu’une fois cette bataille terminée, nous pourrions
+                enfin respirer et simplement construire notre relation dans
+                la paix.
+            </p>
 
-    <div class="story-page" id="storyPage">
-
-        <main>
-
-            <!-- PAGE DE COUVERTURE -->
-
-            <header class="hero">
-
-                <p class="small-title">
-                    16 octobre 2026
-                </p>
-
-                <h1>
-                    Deux cœurs,<br>
-                    une histoire
-                </h1>
-
-                <p class="subtitle">
-                    Certaines histoires méritent plus qu’un souvenir :
-                    elles méritent leurs propres pages.
-                </p>
-
-                <p class="scroll-message">
-                    ↓ Fais défiler doucement ↓
-                </p>
-
-            </header>
+        </section>
 
 
-            <!-- TON TEXTE -->
 
-            <article class="letter">
+        <section>
 
-                <p>
-                    Aujourd’hui, 16 octobre, nous célébrons nos deux ans.
-                    Deux années qui, lorsqu’on y pense, contiennent tellement
-                    de choses… des moments magnifiques, des épreuves, des larmes,
-                    des incompréhensions, des combats, mais aussi beaucoup de
-                    détermination.
-                </p>
+            <h2>
+                Les blessures que je n’avais pas prévues
+            </h2>
 
-                <p>
-                    Au début, nos parents n’acceptaient pas notre relation.
-                    Pourtant, malgré tout ce qui se dressait devant nous,
-                    nous avons continué à nous battre.
-                </p>
+            <p>
+                Mais j’ai découvert d’autres blessures. J’ai appris que tes sœurs ne m’avaient jamais réellement appréciée,
+                particulièrement ta petite sœur.
+            </p>
 
-                <p>
-                    Ma détermination, ta détermination et tout ce que nous avons
-                    traversé ont finalement permis à nos familles d’accepter
-                    notre histoire.
-                </p>
+            <p>
+                J’ai appris certaines choses qui avaient été dites sur moi,
+                certaines humiliations qui avaient eu lieu derrière mon dos,
+                mais parfois aussi devant moi.
+            </p>
 
-                <p>
-                    Je pensais qu’une fois cette bataille terminée, nous pourrions
-                    enfin respirer et simplement construire notre relation dans
-                    la paix.
-                </p>
+            <p>
+                Et je ne vais pas te mentir : cela m’a profondément détruite.
+            </p>
 
-                <p>
-                    Mais j’ai découvert d’autres blessures. J’ai appris ce que
-                    tes sœurs pensaient réellement de moi, particulièrement ta
-                    petite sœur.
-                </p>
+            <p>
+                Il y a des choses qu’on peut entendre et oublier avec le
+                temps. Mais il y en a d’autres qui changent quelque chose
+                en nous.
+            </p>
 
-                <p>
-                    J’ai appris certaines choses qui avaient été dites sur moi,
-                    certaines humiliations qui avaient eu lieu derrière mon dos,
-                    mais parfois aussi devant moi.
-                </p>
+            <p>
+                Ce que j’ai découvert m’a fait pleurer, réfléchir et remettre
+                énormément de choses en question.
+            </p>
 
-                <p>
-                    Et je ne vais pas te mentir : cela m’a profondément détruite.
-                </p>
+            <p>
+                À un moment, j’ai même pensé que je ne voulais plus continuer
+                cette relation.
+            </p>
 
-                <p>
-                    Il y a des choses qu’on peut entendre et oublier avec le
-                    temps. Mais il y en a d’autres qui changent quelque chose
-                    en nous.
-                </p>
+        </section>
 
-                <p>
-                    Ce que j’ai découvert m’a fait pleurer, réfléchir et remettre
-                    énormément de choses en question.
-                </p>
 
-                <p>
-                    À un moment, j’ai même pensé que je ne voulais plus continuer
-                    cette relation.
-                </p>
 
-                <p>
-                    Et ce qui m’a fait encore plus mal, c’est d’avoir eu
-                    l’impression que, même dans cette décision, mes sentiments
-                    n’étaient pas réellement entendus.
-                </p>
+        <section>
 
-                <p>
-                    J’ai parfois eu le sentiment que tout le monde avait une
-                    opinion sur ma vie, sur ma relation, sur ce que je devais
-                    faire… mais que personne ne prenait réellement le temps de
-                    me demander ce que <strong>MOI</strong> je ressentais.
-                </p>
+            <h2>
+                Ce que j’ai ressenti
+            </h2>
 
-                <p>
-                    J’ai souvent eu l’impression de devoir être forte, de
-                    supporter, de comprendre, de pardonner et de continuer,
-                    même lorsque quelque chose en moi était profondément blessé.
-                </p>
+            <p>
+                Et ce qui m’a fait encore plus mal, c’est d’avoir eu
+                l’impression que, même dans cette décision, mes sentiments
+                n’étaient pas réellement entendus.
+            </p>
 
-                <p>
-                    Finalement, j’ai décidé de rester.
-                </p>
+            <p>
+                J’ai parfois eu le sentiment que tout le monde avait une
+                opinion sur ma vie, sur ma relation, sur ce que je devais
+                faire… mais que personne ne prenait réellement le temps de
+                me demander ce que <strong>MOI</strong> je ressentais.
+            </p>
+
+            <p>
+                J’ai souvent eu l’impression de devoir être forte, de
+                supporter, de comprendre, de pardonner et de continuer,
+                même lorsque quelque chose en moi était profondément blessé.
+            </p>
+
+        </section>
+
+
+
+        <section>
+
+            <h2>
+                La décision de rester
+            </h2>
+
+            <p>
+                Finalement, j’ai décidé de rester.
+            </p>
+
+            <div class="highlight-list">
 
                 <p>
                     Pas parce que tout était redevenu parfait.
+                </p>
+
+                <p>
                     Pas parce que j’avais oublié.
+                </p>
+
+                <p>
                     Et surtout pas parce que je n’avais plus de douleur.
                 </p>
 
-                <p>
-                    J’ai décidé de rester parce que je veux te donner une dernière
-                    véritable chance de me montrer que notre histoire peut devenir
-                    différente.
-                </p>
+            </div>
 
-                <p>
-                    Depuis le 22 septembre 2026, quelque chose a changé dans ma
-                    manière de voir notre relation.
-                </p>
+            <p>
+                J’ai décidé de rester parce que je veux te donner une dernière
+                véritable chance de me montrer que notre histoire peut devenir
+                différente.
+            </p>
 
-                <p>
-                    J’ai commencé une nouvelle période dans laquelle je ne veux
-                    plus seulement écouter les promesses : je veux regarder les
-                    actes.
-                </p>
+        </section>
 
-                <p>
-                    Je ne veux plus être la seule à me battre pour que notre
-                    relation fonctionne.
-                </p>
 
-                <p>
-                    Je veux voir comment tu me traites lorsque nous sommes en
-                    désaccord. Je veux voir comment tu me protèges lorsque
-                    quelqu’un me manque de respect.
-                </p>
 
-                <p>
-                    Je veux voir comment tu prends en considération mes sentiments,
-                    même lorsque tu ne les comprends pas complètement.
-                </p>
+        <section>
 
-                <p>
-                    Je veux sentir que je suis ta partenaire, pas simplement
-                    quelqu’un qui doit constamment s’adapter à tout ce qui vient
-                    autour de notre couple.
-                </p>
+            <h2>
+                Depuis le 22 septembre 2026
+            </h2>
 
-                <p>
-                    Je me donne jusqu’au <strong>22 septembre 2027</strong> pour
-                    observer cette nouvelle étape de notre histoire.
-                </p>
+            <p>
+                Depuis le 22 septembre 2026, quelque chose a changé dans ma
+                manière de voir notre relation.
+            </p>
 
-                <p>
-                    Ce n’est pas un compte à rebours destiné à te faire peur.
-                    C’est le temps que je me donne pour voir si mon cœur peut
-                    retrouver la sécurité qu’il a perdue.
-                </p>
+            <p>
+                J’ai commencé une nouvelle période dans laquelle je ne veux
+                plus seulement écouter les promesses : je veux regarder les
+                actes.
+            </p>
 
-                <p>
-                    Parce que oui, Wolph… je t’aime encore. Mais mon amour a
-                    changé.
-                </p>
+            <p>
+                Je ne veux plus être la seule à me battre pour que notre
+                relation fonctionne.
+            </p>
 
-                <p>
-                    Je ne peux plus aimer comme avant, avec les yeux fermés et
-                    le cœur complètement exposé. Quelque chose en moi s’est
-                    construit pour me protéger.
-                </p>
+            <p>
+                Je veux voir comment tu me traites lorsque nous sommes en
+                désaccord. Je veux voir comment tu me protèges lorsque
+                quelqu’un me manque de respect.
+            </p>
 
-                <p>
-                    Je ne veux plus donner tout mon cœur en espérant qu’on
-                    prendra soin de lui. Je veux désormais laisser les actes
-                    parler.
-                </p>
+            <p>
+                Je veux voir comment tu prends en considération mes sentiments,
+                même lorsque tu ne les comprends pas complètement.
+            </p>
 
-                <p>
-                    Je veux recevoir de l’amour et y répondre avec amour.
-                    Je veux être respectée et respecter. Je veux être considérée
-                    et considérer.
-                </p>
+            <p>
+                Je veux sentir que je suis ta partenaire, pas simplement
+                quelqu’un qui doit constamment s’adapter à tout ce qui vient
+                autour de notre couple.
+            </p>
 
-                <p>
-                    Je veux pouvoir faire confiance sans avoir constamment peur
-                    d’être à nouveau blessée.
-                </p>
+        </section>
 
-                <p>
-                    Et concernant tes sœurs, je ne vais pas te mentir non plus :
-                    je ne peux pas faire comme si rien ne s’était passé.
-                </p>
 
-                <p>
-                    Peut-être que je n’aurais jamais dû apprendre certaines
-                    choses. Peut-être que si je ne les avais jamais sues, j’aurais
-                    continué à vivre certaines relations différemment.
-                </p>
 
-                <p>
-                    Mais maintenant que je sais, je ne peux pas simplement effacer
-                    ce que j’ai ressenti.
-                </p>
+        <section class="important">
 
-                <p>
-                    Je n’oublierai jamais les larmes que j’ai versées lorsque
-                    tout m’est arrivé d’un coup. Je n’oublierai pas ce que j’ai
-                    ressenti lorsque j’ai compris certaines choses.
-                </p>
+            <h2>
+                Une année pour observer
+            </h2>
 
-                <p>
-                    Et je ne peux pas faire semblant que cela ne m’a pas changée.
-                </p>
+            <p>
+                Je me donne jusqu’au <strong>22 septembre 2027</strong> pour
+                observer cette nouvelle étape de notre histoire.
+            </p>
 
-                <p>
-                    Je ne te demande pas de choisir entre ta famille et moi.
-                    Je ne veux pas être une raison de conflit entre vous.
-                </p>
+            <p>
+                Ce n’est pas un compte à rebours destiné à te faire peur.
+                C’est le temps que je me donne pour voir si mon cœur peut
+                retrouver la sécurité qu’il a perdue.
+            </p>
 
-                <p>
-                    Mais j’ai besoin que tu comprennes que je ne peux plus
-                    accepter certaines choses simplement pour préserver la paix.
-                </p>
+        </section>
 
-                <p>
-                    J’ai besoin que notre relation soit un endroit où je peux
-                    me sentir respectée, entendue et en sécurité.
-                </p>
 
-                <p>
-                    Aujourd’hui, après deux ans, je ne veux pas seulement
-                    célébrer le temps que nous avons passé ensemble.
-                </p>
 
-                <p>
-                    Je veux aussi regarder ce que nous allons devenir.
-                </p>
+        <section>
 
-                <p>
-                    Je veux savoir si nous sommes capables de grandir.
-                    De devenir plus matures. De mieux communiquer. De nous
-                    protéger mutuellement.
-                </p>
+            <h2>
+                Mon amour a changé
+            </h2>
 
-                <p>
-                    De ne plus laisser les autres décider de ce que nous sommes.
-                </p>
+            <p>
+                Parce que oui, Wolph… je t’aime encore. Mais mon amour a
+                changé.
+            </p>
 
-                <p>
-                    Je ne sais pas exactement où nous serons le 16 octobre
-                    prochain. Je ne sais pas ce que la vie nous réserve.
-                </p>
+            <p>
+                Je ne peux plus aimer comme avant, avec les yeux fermés et
+                le cœur complètement exposé. Quelque chose en moi s’est
+                construit pour me protéger.
+            </p>
 
-                <p>
-                    Mais je sais une chose :
-                </p>
+            <p>
+                Je ne veux plus donner tout mon cœur en espérant qu’on
+                prendra soin de lui. Je veux désormais laisser les actes
+                parler.
+            </p>
 
-                <p class="quote">
-                    Je ne veux plus me perdre pour maintenir une relation.
-                </p>
+            <p>
+                Je veux recevoir de l’amour et y répondre avec amour.
+                Je veux être respectée et respecter. Je veux être considérée
+                et considérer.
+            </p>
 
-                <p>
-                    Je veux pouvoir t’aimer sans me perdre.
-                    Je veux pouvoir rester près de toi sans avoir à sacrifier
-                    ma paix intérieure.
-                </p>
+            <p>
+                Je veux pouvoir faire confiance sans avoir constamment peur
+                d’être à nouveau blessée.
+            </p>
 
-                <p>
-                    Je veux pouvoir regarder notre histoire et me dire que malgré
-                    tout ce que nous avons traversé, nous avons appris à mieux
-                    nous aimer.
-                </p>
+        </section>
 
-                <p>
-                    Alors aujourd’hui, pour nos deux ans, je ne vais pas te
-                    promettre que je serai exactement la même personne qu’avant.
-                </p>
 
-                <p class="quote">
-                    Je ne le suis plus.
-                </p>
 
-                <p>
-                    Je suis devenue plus prudente, plus attentive, parfois plus
-                    distante, parce que certaines blessures m’ont appris à me
-                    protéger.
-                </p>
+        <section>
 
-                <p>
-                    Mais derrière cette nouvelle façon d’aimer, il y a toujours
-                    une personne qui tient à toi.
-                </p>
+            <h2>
+                Concernant ta famille
+            </h2>
 
-                <p>
-                    Une personne qui a beaucoup cru en vous.
-                    Une personne qui s’est battue pour votre histoire.
-                    Une personne qui, malgré ses blessures, a décidé de te
-                    donner encore une chance.
-                </p>
+            <p>
+                Et concernant tes sœurs, je ne vais pas te mentir non plus :
+                je ne peux pas faire comme si rien ne s’était passé.
+            </p>
 
-                <p>
-                    Alors, Wolph, si tu veux vraiment me reconquérir, ne cherche
-                    pas seulement à me convaincre avec des paroles.
-                </p>
+            <p>
+                Peut-être que je n’aurais jamais dû apprendre certaines
+                choses. Peut-être que si je ne les avais jamais sues, j’aurais
+                continué à vivre certaines relations différemment.
+            </p>
+
+            <p>
+                Mais maintenant que je sais, je ne peux pas simplement effacer
+                ce que j’ai ressenti.
+            </p>
+
+            <p>
+                Je n’oublierai jamais les larmes que j’ai versées lorsque
+                tout m’est arrivé d’un coup. Je n’oublierai pas ce que j’ai
+                ressenti lorsque j’ai compris certaines choses.
+            </p>
+
+            <p>
+                Et je ne peux pas faire semblant que cela ne m’a pas changée.
+            </p>
+
+            <p>
+                Je ne te demande pas de choisir entre ta famille et moi.
+                Je ne veux pas être une raison de conflit entre vous.
+            </p>
+
+            <p>
+                Mais j’ai besoin que tu comprennes que je ne peux plus
+                accepter certaines choses simplement pour préserver la paix.
+            </p>
+
+            <p>
+                J’ai besoin que notre relation soit un endroit où je peux
+                me sentir respectée, entendue et en sécurité.
+            </p>
+
+        </section>
+
+
+
+        <section>
+
+            <h2>
+                Ce que nous allons devenir
+            </h2>
+
+            <p>
+                Aujourd’hui, après deux ans, je ne veux pas seulement
+                célébrer le temps que nous avons passé ensemble.
+            </p>
+
+            <p>
+                Je veux aussi regarder ce que nous allons devenir.
+            </p>
+
+            <p>
+                Je veux savoir si nous sommes capables de grandir.
+                De devenir plus matures. De mieux communiquer. De nous
+                protéger mutuellement.
+            </p>
+
+            <p>
+                De ne plus laisser les autres décider de ce que nous sommes.
+            </p>
+
+            <p>
+                Je ne sais pas exactement où nous serons le 16 octobre
+                prochain. Je ne sais pas ce que la vie nous réserve.
+            </p>
+
+            <p>
+                Mais je sais une chose :
+            </p>
+
+            <p class="quote">
+                Je ne veux plus me perdre pour maintenir une relation.
+            </p>
+
+        </section>
+
+
+
+        <section class="important">
+
+            <h2>
+                Aimer sans se perdre
+            </h2>
+
+            <p>
+                Je veux pouvoir t’aimer sans me perdre.
+                Je veux pouvoir rester près de toi sans avoir à sacrifier
+                ma paix intérieure.
+            </p>
+
+            <p>
+                Je veux pouvoir regarder notre histoire et me dire que malgré
+                tout ce que nous avons traversé, nous avons appris à mieux
+                nous aimer.
+            </p>
+
+            <p>
+                Alors aujourd’hui, pour nos deux ans, je ne vais pas te
+                promettre que je serai exactement la même personne qu’avant.
+            </p>
+
+            <p class="quote">
+                Je ne le suis plus.
+            </p>
+
+            <p>
+                Je suis devenue plus prudente, plus attentive, parfois plus
+                distante, parce que certaines blessures m’ont appris à me
+                protéger.
+            </p>
+
+        </section>
+
+
+
+        <section>
+
+            <h2>
+                Une dernière véritable chance
+            </h2>
+
+            <p>
+                Mais derrière cette nouvelle façon d’aimer, il y a toujours
+                une personne qui tient à toi.
+            </p>
+
+            <p>
+                Une personne qui a beaucoup cru en vous.
+                Une personne qui s’est battue pour votre histoire.
+                Une personne qui, malgré ses blessures, a décidé de te
+                donner encore une chance.
+            </p>
+
+            <p>
+                Alors, Wolph, si tu veux vraiment me reconquérir, ne cherche
+                pas seulement à me convaincre avec des paroles.
+            </p>
+
+            <div class="show-me">
 
                 <p>
                     Montre-moi.
@@ -709,94 +1003,214 @@
                     Par ta manière de prendre soin de notre relation.
                 </p>
 
-                <p class="quote">
-                    Et surtout, montre-moi que je peux à nouveau déposer mon cœur
-                    auprès de toi sans avoir peur qu’il soit encore brisé.
-                </p>
+            </div>
 
-                <p>
-                    Je ne sais pas si notre histoire sera exactement celle que
-                    nous avions imaginée au début.
-                </p>
+            <p class="quote">
+                Et surtout, montre-moi que je peux à nouveau déposer mon cœur
+                auprès de toi sans avoir peur qu’il soit encore brisé.
+            </p>
 
-                <p>
-                    Mais aujourd’hui, je choisis encore de voir où cette nouvelle
-                    étape peut nous conduire.
-                </p>
-
-                <p>
-                    Je t’aime peut-être différemment maintenant. Mais je suis
-                    encore là.
-                </p>
-
-                <p>
-                    Et cette fois, je veux que nous construisions quelque chose
-                    qui ne me demande pas de me perdre pour pouvoir rester.
-                </p>
-
-                <p class="final-message">
-                    Joyeux anniversaire à notre histoire, Wolph 🎉🥳♾♥️
-                </p>
-
-                <p>
-                    Que cette troisième année soit celle où nous apprendrons
-                    enfin à nous aimer avec plus de maturité, de respect,
-                    de patience et de vérité.
-                </p>
-
-            </article>
+        </section>
 
 
-            <footer>
-                <p>
-                    Deux cœurs, une histoire.<br>
-                    Et encore des pages à écrire.
-                </p>
-            </footer>
 
-        </main>
+        <section class="ending">
 
-    </div>
+            <h2>
+                Joyeux deux ans à nous
+            </h2>
+
+            <p class="celebration">
+                🥳 🫂 ♥️
+            </p>
+
+            <p>
+                Je ne sais pas si notre histoire sera exactement celle que
+                nous avions imaginée au début.
+            </p>
+
+            <p>
+                Mais aujourd’hui, je choisis encore de voir où cette nouvelle
+                étape peut nous conduire.
+            </p>
+
+            <p>
+                Je t’aime peut-être différemment maintenant. Mais je suis
+                encore là.
+            </p>
+
+            <p>
+                Et cette fois, je veux que nous construisions quelque chose
+                qui ne me demande pas de me perdre pour pouvoir rester.
+            </p>
+
+            <p class="final-message">
+                Joyeux anniversaire à notre histoire, Wolph 🎉🥳♾♥️
+            </p>
+
+            <p>
+                Que cette troisième année soit celle où nous apprendrons
+                enfin à nous aimer avec plus de maturité, de respect,
+                de patience et de vérité.
+            </p>
+
+        </section>
 
 
-    <!-- =========================
-         JAVASCRIPT
-    ========================= -->
+    </main>
 
-    <script>
 
-        function confirmHeadphones() {
 
-            document.getElementById("doneMessage").classList.add("show");
+    <footer>
 
-            setTimeout(function () {
+        <p>
+            Deux cœurs, une histoire.<br>
+            Et encore des pages à écrire.
+        </p>
 
-                document.getElementById("welcomeScreen").style.display = "none";
-                document.getElementById("readyScreen").classList.add("show");
+    </footer>
 
-            }, 1200);
+</div>
+
+
+
+<!-- =================================
+     MUSIQUE
+================================= -->
+
+<audio id="music" loop>
+
+    <source
+        src="daylight.mp3"
+        type="audio/mpeg"
+    >
+
+</audio>
+
+
+
+<script>
+
+
+/* =================================
+   DATE ET HEURE EN TEMPS RÉEL
+================================= */
+
+function updateDateTime() {
+
+    const now = new Date();
+
+
+    const date = now.toLocaleDateString(
+        "fr-FR",
+        {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
         }
+    );
 
 
-        function enterStory() {
-
-            const music = document.getElementById("music");
-
-            music.play().catch(function(error) {
-                console.log("La musique n'a pas pu démarrer :", error);
-            });
-
-            document.getElementById("readyScreen").style.display = "none";
-            document.getElementById("storyPage").classList.add("show");
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
+    const time = now.toLocaleTimeString(
+        "fr-FR",
+        {
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit"
         }
+    );
 
-    </script>
+
+    document.getElementById("liveDate").textContent = date;
+
+    document.getElementById("liveTime").textContent = time;
+
+}
+
+
+/* Première mise à jour */
+
+updateDateTime();
+
+
+/* Mise à jour chaque seconde */
+
+setInterval(updateDateTime, 1000);
+
+
+
+/* =================================
+   BOUTON "C'EST FAIT"
+================================= */
+
+function confirmHeadphones() {
+
+    const message =
+        document.getElementById("doneMessage");
+
+
+    message.style.display = "block";
+
+
+    setTimeout(function() {
+
+        document.getElementById(
+            "welcomeScreen"
+        ).style.display = "none";
+
+
+        document.getElementById(
+            "readyScreen"
+        ).style.display = "flex";
+
+    }, 1200);
+
+}
+
+
+
+/* =================================
+   BOUTON "OUI, J'ACCEPTE"
+================================= */
+
+function enterStory() {
+
+    const music =
+        document.getElementById("music");
+
+
+    music.play().catch(function(error) {
+
+        console.log(
+            "La musique n'a pas pu démarrer automatiquement.",
+            error
+        );
+
+    });
+
+
+    document.getElementById(
+        "readyScreen"
+    ).style.display = "none";
+
+
+    document.getElementById(
+        "storyPage"
+    ).style.display = "block";
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+}
+
+</script>
+
 
 </body>
-
 </html>
