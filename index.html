@@ -3,9 +3,226 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+/* =========================================
+   ANIMATIONS FLUIDES DU SITE
+========================================= */
 
+/* Transition générale des écrans */
+#welcomeScreen,
+#readyScreen,
+#storyPage {
+    transition:
+        opacity 0.8s ease,
+        transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+        visibility 0.8s ease;
+}
+
+/* Écran qui apparaît */
+.screen-enter {
+    animation: screenEnter 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes screenEnter {
+    from {
+        opacity: 0;
+        transform: translateY(25px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Apparition douce du contenu */
+.card {
+    animation: cardAppear 1.1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes cardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Boutons */
+button {
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(100, 70, 35, 0.18);
+}
+
+button:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+/* Petit effet lumineux sur les boutons */
+button::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(255,255,255,0.35),
+        transparent
+    );
+    transform: translateX(-120%);
+    transition: transform 0.7s ease;
+    pointer-events: none;
+}
+
+button:hover::after {
+    transform: translateX(120%);
+}
+
+/* Couverture */
+.cover {
+    animation: coverAppear 1.4s ease both;
+}
+
+@keyframes coverAppear {
+    from {
+        opacity: 0;
+        transform: scale(1.025);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Titre de la couverture */
+.cover h1 {
+    animation: titleReveal 1.3s 0.25s ease both;
+}
+
+@keyframes titleReveal {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+        letter-spacing: 4px;
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        letter-spacing: normal;
+    }
+}
+
+/* Texte de la couverture */
+.cover p {
+    animation: textReveal 1.2s 0.55s ease both;
+}
+
+@keyframes textReveal {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Petits éléments décoratifs */
+.heart,
+.decorative-heart {
+    animation: softFloat 3.5s ease-in-out infinite;
+}
+
+@keyframes softFloat {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-7px);
+    }
+}
+
+/* Texte de l'histoire */
+.story-page p,
+.story-page blockquote,
+.story-page .highlight,
+.story-page .show-me {
+    animation: storyReveal 1s ease both;
+}
+
+@keyframes storyReveal {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Effet doux sur les citations */
+blockquote {
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
+}
+
+blockquote:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(100, 70, 35, 0.12);
+}
+
+/* Apparition de la fin */
+.ending {
+    animation: endingAppear 1.5s ease both;
+}
+
+@keyframes endingAppear {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Respecte les préférences d'animation réduite */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+    button {
+    position: relative;
+    overflow: hidden;
+}
 <title>Deux cœurs, une histoire</title>
-
+    
 <style>
 
 * {
@@ -1239,6 +1456,85 @@ async function enterStory() {
 
 </script>
 
+function switchScreen(currentScreen, nextScreen) {
+    currentScreen.style.opacity = "0";
+    currentScreen.style.transform = "translateY(-20px) scale(0.98)";
 
+    setTimeout(() => {
+        currentScreen.style.display = "none";
+
+        nextScreen.style.display = "flex";
+        nextScreen.style.opacity = "0";
+        nextScreen.style.transform = "translateY(25px) scale(0.98)";
+
+        requestAnimationFrame(() => {
+            nextScreen.style.opacity = "1";
+            nextScreen.style.transform = "translateY(0) scale(1)";
+        });
+
+    }, 700);
+}
+
+
+function confirmHeadphones() {
+    const welcome = document.getElementById("welcomeScreen");
+    const ready = document.getElementById("readyScreen");
+
+    const doneMessage = document.getElementById("doneMessage");
+
+    if (doneMessage) {
+        doneMessage.style.display = "block";
+        doneMessage.style.animation = "cardAppear 0.8s ease both";
+    }
+
+    setTimeout(() => {
+        switchScreen(welcome, ready);
+    }, 1600);
+}
+
+
+async function enterStory() {
+    const ready = document.getElementById("readyScreen");
+    const story = document.getElementById("storyPage");
+    const music = document.getElementById("music");
+    const musicError = document.getElementById("musicError");
+
+    try {
+        music.currentTime = 0;
+        await music.play();
+
+        if (musicError) {
+            musicError.style.display = "none";
+        }
+
+    } catch (error) {
+        if (musicError) {
+            musicError.style.display = "block";
+        }
+    }
+
+    /* Transition vers l'histoire */
+    ready.style.opacity = "0";
+    ready.style.transform = "translateY(-30px) scale(0.97)";
+
+    setTimeout(() => {
+        ready.style.display = "none";
+
+        story.style.display = "block";
+        story.style.opacity = "0";
+        story.style.transform = "translateY(30px)";
+
+        requestAnimationFrame(() => {
+            story.style.opacity = "1";
+            story.style.transform = "translateY(0)";
+        });
+
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+
+    }, 750);
+}
 </body>
 </html>
