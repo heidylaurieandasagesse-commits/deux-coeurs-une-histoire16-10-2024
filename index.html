@@ -9,8 +9,288 @@
     
 <style>
 
+/* ==========================================
+   ✨ ANIMATIONS — DEUX CŒURS, UNE HISTOIRE
+========================================== */
+
+/* ---------- Apparition des écrans ---------- */
+
+#welcomeScreen,
+#readyScreen,
+#storyPage {
+    transition:
+        opacity 0.9s ease,
+        transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
 
 
+/* ---------- Cartes ---------- */
+
+.card {
+    animation: cardEntrance 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes cardEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(45px) scale(0.96);
+        filter: blur(5px);
+    }
+
+    60% {
+        opacity: 1;
+        filter: blur(0);
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ---------- Boutons ---------- */
+
+button {
+    position: relative;
+    overflow: hidden;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        background 0.3s ease;
+}
+
+button:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 12px 28px rgba(120, 82, 42, 0.22);
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+
+/* Lumière qui traverse le bouton */
+
+button::after {
+    content: "";
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 70%;
+    height: 100%;
+
+    background: rgba(255, 255, 255, 0.3);
+
+    transform: skewX(-20deg);
+
+    transition: left 0.7s ease;
+
+    pointer-events: none;
+}
+
+button:hover::after {
+    left: 140%;
+}
+
+
+/* ---------- Couverture ---------- */
+
+.cover {
+    animation: coverEntrance 1.8s ease both;
+}
+
+@keyframes coverEntrance {
+
+    0% {
+        opacity: 0;
+        transform: scale(1.06);
+        filter: blur(4px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+
+/* ---------- Titre ---------- */
+
+.cover h1 {
+    animation:
+        titleEntrance 1.5s 0.3s
+        cubic-bezier(0.22, 1, 0.36, 1)
+        both;
+}
+
+@keyframes titleEntrance {
+
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+        letter-spacing: 7px;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        letter-spacing: normal;
+    }
+}
+
+
+/* ---------- Sous-titre ---------- */
+
+.cover p {
+    animation:
+        subtitleEntrance 1.3s 0.7s ease both;
+}
+
+@keyframes subtitleEntrance {
+
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ==========================================
+   ❤️ APPARITION DES PARAGRAPHES
+========================================== */
+
+.story-page p,
+.story-page blockquote,
+.story-page .highlight,
+.story-page .show-me {
+    opacity: 0;
+    transform: translateY(35px);
+    filter: blur(3px);
+
+    transition:
+        opacity 1s ease,
+        transform 1s cubic-bezier(0.22, 1, 0.36, 1),
+        filter 1s ease;
+}
+
+
+/* Quand l'élément devient visible */
+
+.story-page .visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+
+/* ==========================================
+   💗 PETITS MOUVEMENTS DES CŒURS
+========================================== */
+
+.heart,
+.decorative-heart {
+    animation:
+        gentleHeart 3.5s ease-in-out infinite;
+}
+
+@keyframes gentleHeart {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-8px) scale(1.04);
+    }
+}
+
+
+/* ==========================================
+   📖 BLOCS DE TEXTE
+========================================== */
+
+blockquote {
+    transition:
+        transform 0.45s ease,
+        box-shadow 0.45s ease;
+}
+
+blockquote:hover {
+    transform: translateY(-4px);
+
+    box-shadow:
+        0 14px 32px rgba(120, 82, 42, 0.14);
+}
+
+
+/* ==========================================
+   ✨ FIN DE L'HISTOIRE
+========================================== */
+
+.ending {
+    animation:
+        endingEntrance 1.8s ease both;
+}
+
+@keyframes endingEntrance {
+
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* ==========================================
+   🌙 ANIMATION PLUS DOUCE SUR MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .card {
+        animation-duration: 1.1s;
+    }
+
+    .cover h1 {
+        animation-duration: 1.2s;
+    }
+
+    .story-page p,
+    .story-page blockquote,
+    .story-page .highlight,
+    .story-page .show-me {
+        transform: translateY(25px);
+    }
+}
+
+
+/* Accessibilité */
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
 /* =================================
    PHOTO SUR LA COUVERTURE
 ================================= */
